@@ -26,7 +26,7 @@ contract Tgthr {
     function uploadImage(string memory _imgHash, string memory _description)
         public
     {
-        imageCount = imageCount++;
+        imageCount++;
 
         images[imageCount] = Image(
             imageCount,

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 const Tgthr = artifacts.require("./Tgthr.sol");
 
 require("chai")
@@ -27,12 +28,24 @@ contract("Tgthr", ([deployer, author, tipper]) => {
   });
 
   describe("images", async () => {
-    let result;
+    let result, imageCount;
+    const hash = "test_hash"
+
+    before(async() => {
+      result = await tgthr.uploadImage(hash, 'Image description', {from: author})
+      imageCount = await tgthr.imageCount()
+    })
 
     it("creates images", async () => {
-      result = await tgthr.uploadImage();
-      let image = await tgthr.images(1);
-      console.log(image);
+
+      const event = result.logs[0].args
+
+      assert.equal(imageCount, 1);
+      assert.equal(event.hash, hash, 'hash is correct');
+      assert.equal(event.description, 'Image description', 'Description id correct');
+      assert.equal(event.tipAmount, '0', 'Tip amount is correct');
+      assert.equal(event.author, author, 'author is correct')
+
     });
   });
 });
