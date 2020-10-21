@@ -11,6 +11,9 @@ class App extends Component {
     super(props);
     this.state = {
       account: "",
+      tgthr: null,
+      images: [],
+      loading: false,
     };
   }
 
@@ -47,6 +50,8 @@ class App extends Component {
         Tgthr.abi,
         Tgthr.networks["5777"].address
       );
+      const imageCount = await tgthr.methods.imageCount().call();
+      this.setState({ tgthr, imageCount });
     } else {
       window.alert("Tgthr contract not deployed on this network.");
     }
@@ -62,7 +67,8 @@ class App extends Component {
           </div>
         ) : (
           <Main
-          // Code...
+            images={[]}
+            // Code...
           />
         )}
       </div>
