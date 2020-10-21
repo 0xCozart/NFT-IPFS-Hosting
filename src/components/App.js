@@ -34,9 +34,22 @@ class App extends Component {
 
   async loadEthereumData() {
     const web3 = window.web3;
-
+    // Loads account
     const accounts = await web3.eth.getAccounts();
     this.setState({ account: accounts[0] });
+
+    // Gets contract address per selected network
+    const networkId = await web3.eth.net.getId();
+    const networkData = Tgthr.networks[networkId];
+
+    if (networkData) {
+      const tgthr = web3.eth.Contract(
+        Tgthr.abi,
+        Tgthr.networks["5777"].address
+      );
+    } else {
+      window.alert("Tgthr contract not deployed on this network.");
+    }
   }
 
   render() {
@@ -52,7 +65,6 @@ class App extends Component {
           // Code...
           />
         )}
-        }
       </div>
     );
   }
